@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+
+import { useState ,useEffect } from 'react'
+import {API} from './constants/api.js'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+    const [seminars, setSeminars] = useState([]);
+
+    useEffect(()=>{
+            const fetchSeminars = async () =>{
+                const seminarsJson = await fetch(`${API.SEMINARS}`);
+                const seminars = await seminarsJson.json();
+                setSeminars(seminars);
+            };
+
+            fetchSeminars();
+        },
+        []
+    );
+
+    }
+
+    const renderSeminars = () => {
+        return(
+            <div>
+                HELLO {seminars[0].id}
+            </div>
+        )
+    })
+    }
 
   return (
-    <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+          <h1>
+              TEST
+          </h1>
+          {renderSeminars()}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
   )
 }
 
-export default App
