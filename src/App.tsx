@@ -7,8 +7,8 @@ import './App.css'
 export function App() {
     const [seminars, setSeminars] = useState([]);
 
-    useEffect(()=>{
-            const fetchSeminars = async () =>{
+    useEffect(() => {
+            const fetchSeminars = async () => {
                 const seminarsJson = await fetch(`${API.SEMINARS}`);
                 const seminars = await seminarsJson.json();
                 setSeminars(seminars);
@@ -19,15 +19,12 @@ export function App() {
         []
     );
 
-    }
-
     const renderSeminars = () => {
         return(
             <div>
                 HELLO {seminars[0].id}
             </div>
         )
-    })
     }
 
   return (
@@ -35,7 +32,7 @@ export function App() {
           <h1>
               TEST
           </h1>
-          {renderSeminars()}
+
       </div>
   )
 }
