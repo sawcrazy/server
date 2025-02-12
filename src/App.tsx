@@ -1,17 +1,16 @@
-
-
-import { useState ,useEffect } from 'react'
-import {API} from './constants/api.js'
+import { useState ,useEffect } from 'react';
+import {ISeminars} from '../common/types/seminars.ts';
+import {API} from './constants/api.ts';
 import './App.css'
 
 export function App() {
-    const [seminars, setSeminars] = useState([]);
+    const [seminars, setSeminars] = useState<ISeminars[]>([]);
 
     useEffect(() => {
             const fetchSeminars = async () => {
                 const seminarsJson = await fetch(`${API.SEMINARS}`);
                 const seminars = await seminarsJson.json();
-                setSeminars(seminars);
+                setSeminars(seminars as ISeminars[]);
             };
 
             fetchSeminars();
