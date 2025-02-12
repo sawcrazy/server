@@ -20,11 +20,7 @@ export function App() {
     );
 
     const renderSeminars = () => {
-        return(
-            <div>
-                HELLO {seminars[0].id}
-            </div>
-        )
+        console.log(seminars[0].date);
     }
 
   return (
@@ -32,6 +28,7 @@ export function App() {
           <h1>
               TEST
           </h1>
+          {renderSeminars()}
 
       </div>
   )
