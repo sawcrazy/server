@@ -4,11 +4,13 @@ import {ISeminars} from '../../../common/types/seminars.ts';
 import {Button} from '../button/Button.tsx';
 
 interface ICard {
-    seminars: ISeminars;
-    deleteSeminars(id: string): void;
+    seminars: ISeminars,
+    ClickDelete(): void,
+    ClickEdit(): void,
+
 }
 
-export const Card: FC<ICard> = ({seminars,deleteSeminars}) => {
+export const Card: FC<ICard> = ({seminars, ClickDelete,ClickEdit}) => {
     return (
         <div className={s.list}>
             <dl className={s.holiday}>
@@ -21,10 +23,13 @@ export const Card: FC<ICard> = ({seminars,deleteSeminars}) => {
                 <dt>Время проведение семинара</dt>
                 <dd>{seminars.time}</dd>
                 <dt>Фото</dt>
-                <dd>{seminars.photo}</dd>
+                <dd><img src={seminars.photo} alt="FOTO"/></dd>
             </dl>
-            <Button onClick={()=>deleteSeminars(seminars.id)}>
+            <Button  onClick={ClickDelete}>
                 удалить
+            </Button>
+            <Button onClick={ClickEdit}>
+                Ретактировать
             </Button>
         </div>
     )

@@ -3,9 +3,13 @@ import {ISeminars} from '../common/types/seminars.ts';
 import {API} from './constants/api.ts';
 import './App.css'
 import {Card} from "./components/card/Card.tsx";
+import {ModalDelete} from "./components/modal/modalDelete.tsx";
+import {ModalEdit} from "./components/modal/modalEdit.tsx";
 
 export function App() {
     const [seminars, setSeminars] = useState<ISeminars[]>([]);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
     useEffect(() => {
             const fetchSeminars = async () => {
@@ -29,13 +33,18 @@ export function App() {
         }
         return seminars.map((item) => {
             return (
-                <Card key={item.id} seminars={item} deleteSeminars={deleteSeminars}/>
+                <Card
+                    key={item.id}
+                    seminars={item}
+                    ClickDelete={openModalDelete}
+                    ClickEdit={openModalEdit}
+                />
             )
         })
 
     }
     const deleteSeminars = async (id: string) => {
-        await fetch(`${API.SEMINARS}/${id}`, {
+        await fetch(`${API.SEMINARS}${id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
         });
@@ -43,6 +52,13 @@ export function App() {
         const newSeminars = await seminarsJson.json();
         setSeminars(newSeminars);
     };
+    const openModalDelete = () =>{
+        setOpenDelete(true);
+    }
+    const openModalEdit = () =>{
+        setOpenEdit(true);
+    }
+
 
   return (
       <div>
@@ -50,7 +66,17 @@ export function App() {
               TEST
           </h1>
           {renderSeminars()}
-
+          <ModalDelete
+              open={openDelete}
+              onClose={()=>setOpenDelete(false)}
+              title='Вы действительно хотите удалить элимент'
+              delete={deleteSeminars}
+          />
+          <ModalEdit
+          open={openEdit}
+          onClose={()=>setOpenEdit(false)}
+          title='Внесите изменения'
+          />
       </div>
   )
 }
