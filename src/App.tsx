@@ -10,6 +10,7 @@ export function App() {
     const [seminars, setSeminars] = useState<ISeminars[]>([]);
     const [openDelete, setOpenDelete] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [seminarId, setSeminarId] = useState<string | null>(null);
 
     useEffect(() => {
             const fetchSeminars = async () => {
@@ -55,9 +56,24 @@ export function App() {
     const openModalDelete = () =>{
         setOpenDelete(true);
     }
-    const openModalEdit = () =>{
+    const openModalEdit = (id:string) =>{
+        setSeminarId(id)
         setOpenEdit(true);
+
     }
+    // Функция для сохранения изменений
+    const handleSave = async (editedSeminar) => {
+            // Отправляем изменённые данные на сервер
+            await fetch(`${API.SEMINARS}${editedSeminar.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editedSeminar),
+            });
+
+        const seminarsJson = await fetch(`${API.SEMINARS}`);
+        const newSeminars = await seminarsJson.json();
+        setSeminars(newSeminars);
+    };
 
 
   return (
@@ -75,7 +91,9 @@ export function App() {
           <ModalEdit
           open={openEdit}
           onClose={()=>setOpenEdit(false)}
+          seminar={seminars.find(seminar => seminar.id === seminarId)}
           title='Внесите изменения'
+          onSave={handleSave}
           />
       </div>
   )

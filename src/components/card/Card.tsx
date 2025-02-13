@@ -6,7 +6,7 @@ import {Button} from '../button/Button.tsx';
 interface ICard {
     seminars: ISeminars,
     ClickDelete(): void,
-    ClickEdit(): void,
+    ClickEdit(id: string): void,
 
 }
 
@@ -28,7 +28,7 @@ export const Card: FC<ICard> = ({seminars, ClickDelete,ClickEdit}) => {
             <Button  onClick={ClickDelete}>
                 удалить
             </Button>
-            <Button onClick={ClickEdit}>
+            <Button onClick={() => ClickEdit(seminars.id)}>
                 Ретактировать
             </Button>
         </div>
