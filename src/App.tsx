@@ -86,7 +86,7 @@ export function App() {
           <ModalDelete
               open={openDelete}
               onClose={()=>setOpenDelete(false)}
-              title='Вы действительно хотите удалить элимент'
+              title='Вы действительно хотите удалить элимент?'
               delete={deleteSeminars}
               id={seminarId}
           />
