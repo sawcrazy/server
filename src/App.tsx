@@ -52,18 +52,19 @@ export function App() {
         const seminarsJson = await fetch(`${API.SEMINARS}`);
         const newSeminars = await seminarsJson.json();
         setSeminars(newSeminars);
+        setOpenDelete(false);
     };
-    const openModalDelete = () =>{
+    const openModalDelete = (id: string) =>{
+        setSeminarId(id)
         setOpenDelete(true);
     }
     const openModalEdit = (id:string) =>{
         setSeminarId(id)
         setOpenEdit(true);
 
+
     }
-    // Функция для сохранения изменений
     const handleSave = async (editedSeminar) => {
-            // Отправляем изменённые данные на сервер
             await fetch(`${API.SEMINARS}${editedSeminar.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
@@ -87,6 +88,7 @@ export function App() {
               onClose={()=>setOpenDelete(false)}
               title='Вы действительно хотите удалить элимент'
               delete={deleteSeminars}
+              id={seminarId}
           />
           <ModalEdit
           open={openEdit}

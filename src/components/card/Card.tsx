@@ -5,7 +5,7 @@ import {Button} from '../button/Button.tsx';
 
 interface ICard {
     seminars: ISeminars,
-    ClickDelete(): void,
+    ClickDelete(id: string): void,
     ClickEdit(id: string): void,
 
 }
@@ -25,7 +25,7 @@ export const Card: FC<ICard> = ({seminars, ClickDelete,ClickEdit}) => {
                 <dt>Фото</dt>
                 <dd><img src={seminars.photo} alt="FOTO"/></dd>
             </dl>
-            <Button  onClick={ClickDelete}>
+            <Button  onClick={() => ClickDelete(seminars.id)}>
                 удалить
             </Button>
             <Button onClick={() => ClickEdit(seminars.id)}>
