@@ -1,10 +1,9 @@
-import { useState ,useEffect } from 'react';
+import {useState, useEffect, useCallback, useMemo} from 'react';
 import {ISeminars} from '../common/types/seminars.ts';
-import {API} from './constants/api.ts';
-import './App.css'
+import {fetchSeminars, deleteSeminar, editSeminar} from './api/seminars.api';
 import {Card} from "./components/card/Card.tsx";
-import {ModalDelete} from "./components/modal/modalDelete.tsx";
-import {ModalEdit} from "./components/modal/modalEdit.tsx";
+import {ModalDelete} from "./modals/modalDelete.tsx";
+import {ModalEdit} from "./modals/modalEdit.tsx";
 
 export function App() {
     const [seminars, setSeminars] = useState<ISeminars[]>([]);
@@ -13,91 +12,70 @@ export function App() {
     const [seminarId, setSeminarId] = useState<string | null>(null);
 
     useEffect(() => {
-            const fetchSeminars = async () => {
-                const seminarsJson = await fetch(`${API.SEMINARS}`);
-                const seminars = await seminarsJson.json();
-                setSeminars(seminars as ISeminars[]);
-            };
+        const fetchData = async () => {
+            const seminars = await fetchSeminars();
+            setSeminars(seminars);
+        };
+        fetchData();
+    }, []);
+    const selectedSeminar = useMemo(() => {
+        return seminars.find(seminar => seminar.id === seminarId);
+    }, [seminars, seminarId]); // Зависимости: seminars и seminarId
 
-            fetchSeminars();
-        },
-        []
-    );
+    const handleDelete = useCallback(async (id: string) => {
+        const newSeminars = await deleteSeminar(id);
+        setSeminars(newSeminars);
+        setOpenDelete(false);
+    }, []);
+
+    const handleSave = useCallback(async (editedSeminar: ISeminars) => {
+        const newSeminars = await editSeminar(editedSeminar);
+        setSeminars(newSeminars);
+        setOpenEdit(false);
+    }, []);
+
+    const openModalDelete = useCallback((id: string) => {
+        setSeminarId(id);
+        setOpenDelete(true);
+    }, []);
+
+    const openModalEdit = useCallback((id: string) => {
+        setSeminarId(id);
+        setOpenEdit(true);
+    }, []);
 
     const renderSeminars = () => {
         if (seminars.length === 0) {
-            return <div>
-                <h1>
-                    LOGIN DE SEMINARS
-                </h1>
-            </div>
+            return <div><h1>LOADING</h1></div>;
         }
-        return seminars.map((item) => {
-            return (
-                <Card
-                    key={item.id}
-                    seminars={item}
-                    ClickDelete={openModalDelete}
-                    ClickEdit={openModalEdit}
-                />
-            )
-        })
-
-    }
-    const deleteSeminars = async (id: string) => {
-        await fetch(`${API.SEMINARS}${id}`, {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-        });
-        const seminarsJson = await fetch(`${API.SEMINARS}`);
-        const newSeminars = await seminarsJson.json();
-        setSeminars(newSeminars);
-        setOpenDelete(false);
-    };
-    const openModalDelete = (id: string) =>{
-        setSeminarId(id)
-        setOpenDelete(true);
-    }
-    const openModalEdit = (id:string) =>{
-        setSeminarId(id)
-        setOpenEdit(true);
-
-
-    }
-    const handleSave = async (editedSeminar) => {
-            await fetch(`${API.SEMINARS}${editedSeminar.id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editedSeminar),
-            });
-
-        const seminarsJson = await fetch(`${API.SEMINARS}`);
-        const newSeminars = await seminarsJson.json();
-        setSeminars(newSeminars);
+        return seminars.map((item) => (
+            <Card
+                key={item.id}
+                seminars={item}
+                onClickDelete={openModalDelete}
+                onClickEdit={openModalEdit}
+            />
+        ));
     };
 
-
-  return (
-      <div>
-          <h1>
-              TEST
-          </h1>
-          {renderSeminars()}
-          <ModalDelete
-              open={openDelete}
-              onClose={()=>setOpenDelete(false)}
-              title='Вы действительно хотите удалить элимент?'
-              delete={deleteSeminars}
-              id={seminarId}
-          />
-          <ModalEdit
-          open={openEdit}
-          onClose={()=>setOpenEdit(false)}
-          seminar={seminars.find(seminar => seminar.id === seminarId)}
-          title='Внесите изменения'
-          onSave={handleSave}
-          />
-      </div>
-  )
+    return (
+        <div>
+            <h1>Список семинаров</h1>
+            {renderSeminars()}
+            <ModalDelete
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}
+                title='Вы действительно хотите удалить элемент?'
+                delete={handleDelete}
+                id={seminarId}
+            />
+            <ModalEdit
+                open={openEdit}
+                onClose={() => setOpenEdit(false)}
+                seminar={selectedSeminar}
+                title='Внесите изменения'
+                onSave={handleSave}
+            />
+        </div>
+    );
 }
-

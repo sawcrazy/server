@@ -1,5 +1,5 @@
-import {Modal} from "./modal.tsx";
-import {Button} from "../button/Button.tsx";
+import {Modal} from "../components/modal/modal.tsx";
+import {Button} from "../components/button/Button.tsx";
 
 export const ModalDelete = (props) =>{
     const { open, title, onClose, delete: deleteHandler, id } = props;

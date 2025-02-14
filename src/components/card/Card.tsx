@@ -5,12 +5,12 @@ import {Button} from '../button/Button.tsx';
 
 interface ICard {
     seminars: ISeminars,
-    ClickDelete(id: string): void,
-    ClickEdit(id: string): void,
+    onClickDelete(id: string): void,
+    onClickEdit(id: string): void,
 
 }
 
-export const Card: FC<ICard> = ({seminars, ClickDelete,ClickEdit}) => {
+export const Card: FC<ICard> = ({seminars, onClickDelete,onClickEdit}) => {
     return (
         <div className={s.list}>
             <dl className={s.holiday}>
@@ -25,10 +25,10 @@ export const Card: FC<ICard> = ({seminars, ClickDelete,ClickEdit}) => {
                 <dt>Фото</dt>
                 <dd><img src={seminars.photo} alt="FOTO"/></dd>
             </dl>
-            <Button  onClick={() => ClickDelete(seminars.id)}>
+            <Button  onClick={() => onClickDelete(seminars.id)}>
                 удалить
             </Button>
-            <Button onClick={() => ClickEdit(seminars.id)}>
+            <Button onClick={() => onClickEdit(seminars.id)}>
                 Ретактировать
             </Button>
         </div>

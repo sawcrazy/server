@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
-import {Modal} from "./modal.tsx";
-import {Button} from "../button/Button.tsx";
-import s from "../card/style.module.css";
+import {Modal} from "../components/modal/modal.tsx";
+import {Button} from "../components/button/Button.tsx";
+import s from "../components/card/style.module.css";
 
 
 export const ModalEdit = (props) =>{
