@@ -29,7 +29,7 @@ export const Card: FC<ICard> = ({seminars, onClickDelete,onClickEdit}) => {
                 удалить
             </Button>
             <Button onClick={() => onClickEdit(seminars.id)}>
-                Ретактировать
+                Редактировать
             </Button>
         </div>
     )

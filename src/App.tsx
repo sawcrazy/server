@@ -20,7 +20,7 @@ export function App() {
     }, []);
     const selectedSeminar = useMemo(() => {
         return seminars.find(seminar => seminar.id === seminarId);
-    }, [seminars, seminarId]); // Зависимости: seminars и seminarId
+    }, [seminars, seminarId]);
 
     const handleDelete = useCallback(async (id: string) => {
         const newSeminars = await deleteSeminar(id);

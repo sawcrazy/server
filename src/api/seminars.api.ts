@@ -1,3 +1,5 @@
+import {API} from '../constants/api.ts';
+
 export const fetchSeminars = async () => {
     const response = await fetch(`${API.SEMINARS}`);
     const seminars = await response.json();
@@ -19,7 +21,4 @@ export const editSeminar = async (editedSeminar: ISeminars) => {
         body: JSON.stringify(editedSeminar),
     });
     return await fetchSeminars();
-};
-export const API = {
-    SEMINARS: 'http://localhost:3001/seminars/'
 };
