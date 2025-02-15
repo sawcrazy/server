@@ -1,16 +1,10 @@
-import {FC} from 'react';
 import s from './style.module.css';
-import {ISeminars} from '../../../common/types/seminars.ts';
+import {ICard} from "./card.props.ts";
 import {Button} from '../button/Button.tsx';
 
-interface ICard {
-    seminars: ISeminars,
-    onClickDelete(id: string): void,
-    onClickEdit(id: string): void,
 
-}
 
-export const Card: FC<ICard> = ({seminars, onClickDelete,onClickEdit}) => {
+export const Card: React.FC<ICard> = ({seminars, onClickDelete,onClickEdit}) => {
     return (
         <div className={s.list}>
             <dl className={s.holiday}>

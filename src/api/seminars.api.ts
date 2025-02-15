@@ -1,4 +1,5 @@
 import {API} from '../constants/api.ts';
+import {ISeminars} from "../../common/types/seminars.ts";
 
 export const fetchSeminars = async () => {
     const response = await fetch(`${API.SEMINARS}`);

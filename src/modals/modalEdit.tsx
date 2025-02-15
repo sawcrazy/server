@@ -2,10 +2,10 @@ import {useState, useEffect} from "react";
 import {Modal} from "../components/modal/modal.tsx";
 import {Button} from "../components/button/Button.tsx";
 import s from "../components/card/style.module.css";
+import {ModalEditProps} from "./modalEdit.props.ts";
 
 
-export const ModalEdit = (props) =>{
-    const { open, onClose, title, seminar,onSave } = props;
+export const ModalEdit: React.FC<ModalEditProps> = ({ open, onClose, title, seminar, onSave }) =>{
 
     if (!seminar) {
         return null;
@@ -16,7 +16,7 @@ export const ModalEdit = (props) =>{
     }, [seminar]);
 
 
-    const handleChange = (field, value) => {
+    const handleChange = (field: string, value: string) => {
         setEditedSeminar({
             ...editedSeminar,
             [field]: value,
